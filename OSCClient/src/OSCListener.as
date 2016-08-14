@@ -8,24 +8,16 @@ package
 	 * ...
 	 * @author umhr
 	 */
-	public class OSCListenerManager implements IOSCListener
+	public class OSCListener implements IOSCListener
 	{
-		private static var _instance:OSCListenerManager;
-		public function OSCListenerManager(block:Block){init();};
-		public static function getInstance():OSCListenerManager{
-			if ( _instance == null ) {_instance = new OSCListenerManager(new Block());};
-			return _instance;
-		}
-		
-		private var _oscManager:OSCManager;
 		/**
 		 * 受信時にこの関数にメッセージが渡されます。
 		 */
 		public var onAcceptOSCMessage:Function = function(oscmsg:OSCMessage):void { };
-		private function init():void
-		{
+		private var _oscManager:OSCManager;
+		public function OSCListener(){
 			
-		}
+		};
 		
 		/**
 		 * 送受信IPAdress、Portを指定します。
@@ -62,9 +54,13 @@ package
 			}
 			
 			_oscManager.sendOSCPacket(m);
-			
 		}
 		
+		/**
+		 * IOSCListener を継承しているので Public になっているが、外からは使わない。
+		 * onAcceptOSCMessage を使って、 OSCMessage を取得する。
+		 * @param	oscmsg
+		 */
 		public function acceptOSCMessage(oscmsg:OSCMessage):void
 		{
 			onAcceptOSCMessage(oscmsg);

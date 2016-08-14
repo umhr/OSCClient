@@ -16,7 +16,7 @@ package
 	 */
 	public class Container extends Sprite 
 	{
-		
+		private var _oscListener:OSCListener = new OSCListener();
 		private var _inAdress:Text;
 		private var _outAdress:Text;
 		private var _oscAddress:Text;
@@ -58,7 +58,7 @@ package
 			var outIPAdress:String = _outAdress.text.split(":")[0];
 			var outPort:int = int(_outAdress.text.split(":")[1]);
 			
-			OSCListenerManager.getInstance().bind(inIPAdress, inPort, outIPAdress, outPort);
+			_oscListener.bind(inIPAdress, inPort, outIPAdress, outPort);
 			
 			(e.target as PushButton).enabled = _inAdress.enabled = _outAdress.enabled = false;
 			addMessageUI();
@@ -94,7 +94,7 @@ package
 			_log = new TextArea(this, 8, 80 + 24 * 9);
 			_log.width = 358;
 			
-			OSCListenerManager.getInstance().onAcceptOSCMessage = onAcceptOSCMessage;
+			_oscListener.onAcceptOSCMessage = onAcceptOSCMessage;
 		}
 		
 		private function onSend(e:Event):void 
@@ -124,7 +124,7 @@ package
 			}
 			
 			trace(oscAddress, _oscMessageList.length);
-			OSCListenerManager.getInstance().send(oscAddress, messageList, typeList);
+			_oscListener.send(oscAddress, messageList, typeList);
 		}
 		
 		private function onAcceptOSCMessage(oscmsg:OSCMessage):void 
